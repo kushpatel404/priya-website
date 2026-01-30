@@ -36,7 +36,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,66 +46,131 @@
         }
 
         .loading-screen.hidden {
-            animation: fadeOut 2s ease forwards;
+            animation: fadeOut 1s ease forwards;
             pointer-events: none;
         }
 
         @keyframes fadeOut {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            100% {
+            to {
                 opacity: 0;
-                transform: scale(1.1);
             }
         }
 
         .loading-screen h2 {
-            color: #fff;
+            color: white;
             font-size: clamp(1.5rem, 5vw, 2.5rem);
             margin-bottom: 30px;
             animation: pulse 1.5s infinite;
             text-align: center;
-            font-weight: 700;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 107, 107, 0.7);
-            letter-spacing: 1px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
+        /* Loading screen photo slideshow */
+        .loading-slideshow {
+            position: relative;
+            width: clamp(200px, 50vw, 300px);
+            height: clamp(200px, 50vw, 300px);
+            margin-bottom: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 8px rgba(255,255,255,0.3);
+        }
+
+        .loading-slideshow img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            animation: loadingSlide 8s infinite;
+        }
+
+        .loading-slideshow img:nth-child(1) { animation-delay: 0s; }
+        .loading-slideshow img:nth-child(2) { animation-delay: 2s; }
+        .loading-slideshow img:nth-child(3) { animation-delay: 4s; }
+        .loading-slideshow img:nth-child(4) { animation-delay: 6s; }
+
+        @keyframes loadingSlide {
+            0%, 100% { 
+                opacity: 0; 
+                transform: scale(1.1) rotate(-5deg);
+            }
+            5%, 20% { 
+                opacity: 1; 
+                transform: scale(1) rotate(0deg);
+            }
+            25% { 
+                opacity: 0; 
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+
+        .loading-slideshow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: inset 0 0 30px rgba(255, 107, 107, 0.5);
+            pointer-events: none;
+        }
+
+        /* Heart decoration around slideshow */
+        .loading-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: rotateHearts 10s linear infinite;
+        }
+
+        @keyframes rotateHearts {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .loading-heart:nth-child(1) { top: -15px; left: 50%; transform: translateX(-50%); }
+        .loading-heart:nth-child(2) { top: 50%; right: -15px; transform: translateY(-50%); }
+        .loading-heart:nth-child(3) { bottom: -15px; left: 50%; transform: translateX(-50%); }
+        .loading-heart:nth-child(4) { top: 50%; left: -15px; transform: translateY(-50%); }
+
         .play-button {
-            background: linear-gradient(135deg, #ff3366, #ff8e53);
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
             color: white;
-            border: 3px solid rgba(255, 255, 255, 0.6);
+            border: none;
             padding: clamp(15px, 4vw, 25px) clamp(40px, 10vw, 60px);
             font-size: clamp(1.2rem, 4vw, 1.8rem);
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8), 0 15px 50px rgba(255, 107, 107, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
             transition: all 0.3s ease;
             font-weight: bold;
-            animation: popBounce 1.5s ease-in-out infinite;
+            animation: bounce 2s infinite;
             -webkit-tap-highlight-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
-        }
-
-        .play-button:hover {
-            box-shadow: 0 0 50px rgba(255, 51, 102, 1), 0 20px 60px rgba(255, 107, 107, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.4);
-            transform: scale(1.05);
-        }
-
-        @keyframes popBounce {
-            0%, 100% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-15px) scale(1.05);
-            }
         }
 
         .play-button:active {
             transform: scale(0.95);
-            box-shadow: 0 0 30px rgba(255, 51, 102, 0.9), 0 5px 20px rgba(255, 107, 107, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.7);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         /* Animated background with photos */
@@ -241,14 +306,6 @@
             padding: clamp(80px, 15vw, 120px) clamp(15px, 4vw, 20px) clamp(40px, 8vw, 60px);
             padding-bottom: max(60px, env(safe-area-inset-bottom) + 40px);
             padding-top: max(100px, env(safe-area-inset-top) + 80px);
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.8s ease-out, transform 1.8s ease-out;
-        }
-
-        .container.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         /* Game Stats HUD */
@@ -264,14 +321,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             display: none;
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-
-        .game-hud.visible {
-            opacity: 1;
-            transform: translateX(0);
         }
 
         .score-item {
@@ -284,11 +333,18 @@
             color: #ff6b6b;
         }
 
-        /* Music toggle button */
-        .music-toggle {
+        /* Top right buttons container */
+        .top-buttons {
             position: fixed;
             top: max(20px, env(safe-area-inset-top) + 10px);
             right: max(20px, env(safe-area-inset-right) + 10px);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        /* Game toggle button */
+        .game-toggle {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -299,7 +355,31 @@
             font-size: clamp(20px, 5vw, 24px);
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .game-toggle:active {
+            transform: scale(0.9);
+        }
+
+        /* Music toggle button */
+        .music-toggle {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: none;
+            width: clamp(50px, 12vw, 60px);
+            height: clamp(50px, 12vw, 60px);
+            border-radius: 50%;
+            font-size: clamp(20px, 5vw, 24px);
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             animation: pulse-music 2s infinite;
             -webkit-tap-highlight-color: transparent;
@@ -318,55 +398,78 @@
             transform: scale(0.9);
         }
 
-        /* Game icon and menu */
-        .game-icon {
+        /* Game Menu Modal */
+        .game-menu {
             position: fixed;
-            top: max(20px, env(safe-area-inset-top) + 10px);
-            /* place to the left of the music button */
-            right: calc(max(20px, env(safe-area-inset-right) + 10px) + 70px);
-            width: clamp(50px, 10vw, 60px);
-            height: clamp(50px, 10vw, 60px);
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2500;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-menu-title {
+            color: white;
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .game-menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .game-option {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            border-radius: 20px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(20px, 4.5vw, 24px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            gap: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .game-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        .game-option:active {
+            transform: scale(0.95);
+        }
+
+        .game-menu-close {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 30px;
             cursor: pointer;
-            z-index: 1100;
-            transition: transform 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
+            transition: all 0.3s ease;
         }
 
-        .game-icon:active { transform: scale(0.95); }
-
-        .games-menu {
-            position: fixed;
-            bottom: calc(max(20px, env(safe-area-inset-bottom) + 100px));
-            left: max(20px, env(safe-area-inset-left) + 20px);
-            background: rgba(255,255,255,0.98);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 12px;
-            border-radius: 12px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 1250;
+        .game-menu-close:hover {
+            background: white;
+            color: #ff6b6b;
         }
-
-        .games-menu button {
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .games-menu .open-game { background: linear-gradient(135deg,#ff6b6b,#ff8e53); color: #fff; }
-        .games-menu .close-menu { background: #eee; color: #333; }
 
         /* Mini Game: Catch the Hearts */
         .mini-game {
@@ -397,7 +500,7 @@
 
         .game-heart {
             position: absolute;
-            font-size: 55px;
+            font-size: 30px;
             cursor: pointer;
             animation: fall-heart 3s linear;
             pointer-events: auto;
@@ -540,24 +643,19 @@
             max-width: 600px;
             width: 100%;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-            animation: cardEntrance 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: cardEntrance 1s ease-out;
             position: relative;
             border: 3px solid rgba(255, 107, 107, 0.4);
             margin-bottom: 40px;
-            opacity: 0;
-            transform: translateY(-60px) scale(0.95);
         }
 
         @keyframes cardEntrance {
-            0% {
-                transform: translateY(-60px) scale(0.95);
+            from {
+                transform: translateY(-50px);
                 opacity: 0;
             }
-            60% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0) scale(1);
+            to {
+                transform: translateY(0);
                 opacity: 1;
             }
         }
@@ -727,17 +825,6 @@
             75% { transform: translateX(10px); }
         }
 
-        @keyframes cardFadeOut {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-        }
-
         .counter-text {
             font-size: clamp(0.95rem, 3vw, 1.1rem);
             color: #ff6b6b;
@@ -841,46 +928,37 @@
         .success-message {
             display: none;
             text-align: center;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-            will-change: opacity, transform;
+            animation: celebration 1s ease-out;
         }
 
-        .success-message.show {
-            opacity: 1;
-            transform: scale(1);
+        @keyframes celebration {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
         }
 
         .success-message h2 {
             font-size: clamp(2rem, 7vw, 3rem);
             color: #ff6b6b;
             margin-bottom: clamp(15px, 4vw, 20px);
-            animation: bounce-success 1.5s ease-in-out infinite;
+            animation: bounce-success 1s infinite;
             text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.8);
-            will-change: transform;
         }
 
         @keyframes bounce-success {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
         }
 
         .success-message p {
             font-size: clamp(1.1rem, 4vw, 1.5rem);
             color: #222;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Question content fade out */
-        #questionContent {
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-            will-change: opacity, transform;
-        }
-
-        #questionContent.hiding {
-            opacity: 0;
-            transform: scale(0.95);
         }
 
         /* Love letter animation */
@@ -891,17 +969,16 @@
             background: #fff9e6;
             border: 2px dashed #ff6b6b;
             border-radius: 15px;
-            animation: letter-unfold 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            will-change: transform, opacity;
+            animation: letter-unfold 1s ease-out;
         }
 
         @keyframes letter-unfold {
             from {
-                transform: translateY(20px) scale(0.9);
+                transform: rotateX(90deg);
                 opacity: 0;
             }
             to {
-                transform: translateY(0) scale(1);
+                transform: rotateX(0deg);
                 opacity: 1;
             }
         }
@@ -919,19 +996,12 @@
             width: 10px;
             height: 10px;
             background: #ff6b6b;
-            animation: confetti-fall 3s linear forwards;
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-            pointer-events: none;
+            animation: confetti-fall 3s linear infinite;
         }
 
         @keyframes confetti-fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
+            to {
+                transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -944,19 +1014,6 @@
             background: linear-gradient(135deg, #fff0f0, #ffe5e5);
             border-radius: 15px;
             display: none;
-            animation: fade-slide-up 0.7s ease-out forwards;
-            will-change: transform, opacity;
-        }
-
-        @keyframes fade-slide-up {
-            from {
-                transform: translateY(15px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .countdown-title {
@@ -1023,25 +1080,19 @@
         /* Fireworks */
         .firework {
             position: fixed;
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
-            animation: firework-burst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-            pointer-events: none;
+            animation: firework-burst 1s ease-out forwards;
         }
 
         @keyframes firework-burst {
             0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            50% {
+                transform: translate(0, 0);
                 opacity: 1;
             }
             100% {
-                transform: translate(var(--x), var(--y)) scale(0.3);
+                transform: translate(var(--x), var(--y));
                 opacity: 0;
             }
         }
@@ -1051,12 +1102,27 @@
     <!-- Loading/Music Start Screen -->
     <div class="loading-screen" id="loadingScreen">
         <h2>💕 A Special Message for Priya 💕</h2>
+        
+        <!-- Photo Slideshow -->
+        <div class="loading-slideshow">
+            <div class="loading-hearts">
+                <span class="loading-heart">💖</span>
+                <span class="loading-heart">💕</span>
+                <span class="loading-heart">💗</span>
+                <span class="loading-heart">💝</span>
+            </div>
+            <img src="images/priya1.JPG" alt="Priya">
+            <img src="images/priya2.jpg" alt="Priya">
+            <img src="images/priya3.jpg" alt="Priya">
+            <img src="images/priya4.jpg" alt="Priya">
+        </div>
+        
         <button class="play-button" onclick="startExperience()">Click to Start 🎵</button>
     </div>
 
     <!-- Animated background with your photos -->
     <div class="background-slideshow">
-        <img src="images/priya1.jpg" alt="" class="bg-image">
+        <img src="images/priya1.JPG" alt="" class="bg-image">
         <img src="images/priya2.jpg" alt="" class="bg-image">
         <img src="images/priya3.jpg" alt="" class="bg-image">
         <img src="images/priya4.jpg" alt="" class="bg-image">
@@ -1069,17 +1135,10 @@
         <div class="score-item">⭐ Points: <span id="totalPoints">0</span></div>
     </div>
 
-    <!-- Music toggle -->
-    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🔊</button>
-
-    <!-- Game icon (left of music icon). Click starts Catch game -->
-    <div class="game-icon" id="gameIcon" title="Play Games" onclick="openCatchGameFromMenu()">🎮</div>
-
-    <!-- Games menu -->
-    <div class="games-menu" id="gamesMenu" aria-hidden="true">
-        <button class="open-game" onclick="openCatchGameFromMenu()">Catch the Hearts 💖</button>
-        <button class="open-game" onclick="openMemoryGameFromMenu()">Memory Game 🧠</button>
-        <button class="close-menu" onclick="closeGamesMenu()">Close ✕</button>
+    <!-- Top right buttons -->
+    <div class="top-buttons">
+        <button class="game-toggle" onclick="openGameMenu()" id="gameBtn" title="Play Games">🎮</button>
+        <button class="music-toggle" onclick="toggleMusic()" id="musicBtn" title="Toggle Music">🔊</button>
     </div>
 
     <!-- Background audio -->
@@ -1094,18 +1153,32 @@
         <div class="achievement-text" id="achievementText">You're Amazing!</div>
     </div>
 
+    <!-- Game Menu -->
+    <div class="game-menu" id="gameMenu">
+        <h2 class="game-menu-title">🎮 Love Games 💕</h2>
+        <div class="game-menu-options">
+            <button class="game-option" onclick="startCatchGameFromMenu()">
+                <span>💖</span> Catch the Hearts
+            </button>
+            <button class="game-option" onclick="startMemoryGameFromMenu()">
+                <span>🧠</span> Memory Match
+            </button>
+        </div>
+        <button class="game-menu-close" onclick="closeGameMenu()">Close</button>
+    </div>
+
     <!-- Mini Game: Catch the Hearts -->
     <div class="mini-game" id="miniGame">
         <div class="game-score">💖 Score: <span id="catchScore">0</span>/10</div>
         <div class="game-container" id="gameContainer"></div>
-        <button class="game-close" onclick="closeMiniGame()">Continue</button>
+        <button class="game-close" onclick="closeMiniGame()">Close</button>
     </div>
 
     <!-- Memory Game -->
     <div class="memory-game" id="memoryGame">
         <div class="game-score">🧠 Memory Challenge! Match the pairs!</div>
         <div class="memory-grid" id="memoryGrid"></div>
-        <button class="game-close" onclick="closeMemoryGame()">Continue</button>
+        <button class="game-close" onclick="closeMemoryGame()">Close</button>
     </div>
 
     <!-- Floating hearts background -->
@@ -1136,7 +1209,7 @@
             <span class="rose-decoration rose-right">🌹</span>
             
             <div class="image-container" onclick="openGallery()">
-                <img src="images/priya1.jpg" alt="Priya" id="profileImage">
+                <img src="images/priya1.JPG" alt="Priya" id="profileImage">
             </div>
 
             <div id="questionContent">
@@ -1209,7 +1282,7 @@
 
         // Your photos for gallery and background
         const photos = [
-            'images/priya1.jpg',
+            'images/priya1.JPG',
             'images/priya2.jpg',
             'images/priya3.jpg',
             'images/priya4.jpg'
@@ -1217,14 +1290,13 @@
 
         let currentPhotoIndex = 0;
         let musicPlaying = false;
-        let animationsStarted = false;
+        let catchGameInterval = null;
 
-        // Start experience function - NO GAMES AUTO-START
+        // Start experience function - NO automatic games
         function startExperience() {
             const music = document.getElementById('bgMusic');
             const loadingScreen = document.getElementById('loadingScreen');
             const musicBtn = document.getElementById('musicBtn');
-            const container = document.querySelector('.container');
             
             const playPromise = music.play();
             
@@ -1233,70 +1305,25 @@
                     musicPlaying = true;
                     musicBtn.textContent = '🔊';
                     loadingScreen.classList.add('hidden');
-                    
-                    // Show container with slower elegant transition
-                    setTimeout(() => {
-                        container.style.display = 'flex';
-                        // Trigger reflow
-                        container.offsetHeight;
-                        // Add visible class for smooth fade in
-                        requestAnimationFrame(() => {
-                            container.classList.add('visible');
-                        });
-                    }, 800);
-                    
                     setTimeout(() => {
                         loadingScreen.style.display = 'none';
-                    }, 2000);
-                    
-                    // Start animations after a delay for smoother experience
-                    setTimeout(() => {
-                        startAnimations();
-                    }, 1200);
-                    
-                    // Show HUD with delay
-                    setTimeout(() => {
-                        showGameHud();
-                    }, 2500);
-                    
-                    // NO AUTO GAME START - user clicks game icon instead
+                    }, 1000);
+                    startAnimations();
+                    showGameHud();
                 }).catch(error => {
                     console.log('Autoplay prevented:', error);
                     loadingScreen.classList.add('hidden');
-                    
-                    // Show container with slower elegant transition
-                    setTimeout(() => {
-                        container.style.display = 'flex';
-                        container.offsetHeight;
-                        requestAnimationFrame(() => {
-                            container.classList.add('visible');
-                        });
-                    }, 800);
-                    
                     setTimeout(() => {
                         loadingScreen.style.display = 'none';
-                    }, 2000);
-                    
-                    setTimeout(() => {
-                        startAnimations();
-                    }, 1200);
-                    
-                    setTimeout(() => {
-                        showGameHud();
-                    }, 2500);
-                    // NO AUTO GAME START
+                    }, 1000);
+                    startAnimations();
+                    showGameHud();
                 });
             }
         }
 
         function showGameHud() {
-            const hud = document.getElementById('gameHud');
-            hud.style.display = 'block';
-            // Trigger reflow
-            hud.offsetHeight;
-            requestAnimationFrame(() => {
-                hud.classList.add('visible');
-            });
+            document.getElementById('gameHud').style.display = 'block';
             updateGameHud();
         }
 
@@ -1317,67 +1344,33 @@
             }, 3000);
         }
 
-        // Games menu handlers - GLOBAL SCOPE
-        function toggleGamesMenu() {
-            const menu = document.getElementById('gamesMenu');
-            if (menu.style.display === 'flex') {
-                closeGamesMenu();
-            } else {
-                menu.style.display = 'flex';
-                menu.setAttribute('aria-hidden', 'false');
-            }
+        // Game Menu Functions
+        function openGameMenu() {
+            document.getElementById('gameMenu').style.display = 'flex';
         }
 
-        function closeGamesMenu() {
-            const menu = document.getElementById('gamesMenu');
-            menu.style.display = 'none';
-            menu.setAttribute('aria-hidden', 'true');
+        function closeGameMenu() {
+            document.getElementById('gameMenu').style.display = 'none';
         }
 
-        function openCatchGameFromMenu() {
-            closeGamesMenu();
-            // Ensure UI and animations are running
-            if (!animationsStarted) {
-                startAnimations();
-            }
-            showGameHud();
-            // Hide loading screen if still visible
-            const loadingScreen = document.getElementById('loadingScreen');
-            if (loadingScreen && loadingScreen.style.display !== 'none') {
-                loadingScreen.classList.add('hidden');
-                setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
-            }
+        // Catch the Hearts Game - from menu
+        function startCatchGameFromMenu() {
+            closeGameMenu();
             startCatchGame();
         }
 
-        function openMemoryGameFromMenu() {
-            closeGamesMenu();
-            // Ensure UI and animations are running
-            if (!animationsStarted) {
-                startAnimations();
-            }
-            showGameHud();
-            // Hide loading screen if still visible
-            const loadingScreen = document.getElementById('loadingScreen');
-            if (loadingScreen && loadingScreen.style.display !== 'none') {
-                loadingScreen.classList.add('hidden');
-                setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
-            }
-            startMemoryGame();
-        }
-
-        // Catch the Hearts Game
         function startCatchGame() {
             const miniGame = document.getElementById('miniGame');
             const gameContainer = document.getElementById('gameContainer');
             miniGame.style.display = 'flex';
             gameScore.catchGameScore = 0;
             document.getElementById('catchScore').textContent = '0';
+            gameContainer.innerHTML = '';
             
             let heartsSpawned = 0;
-            const spawnInterval = setInterval(() => {
+            catchGameInterval = setInterval(() => {
                 if (heartsSpawned >= 10) {
-                    clearInterval(spawnInterval);
+                    clearInterval(catchGameInterval);
                     return;
                 }
                 
@@ -1408,17 +1401,24 @@
             
             if (gameScore.catchGameScore >= 10) {
                 showAchievement('Heart Collector! 💖', 'You caught all the hearts!');
-                setTimeout(() => closeMiniGame(), 1500);
             }
         }
 
         function closeMiniGame() {
             document.getElementById('miniGame').style.display = 'none';
             document.getElementById('gameContainer').innerHTML = '';
-            setTimeout(() => startMemoryGame(), 1000);
+            if (catchGameInterval) {
+                clearInterval(catchGameInterval);
+                catchGameInterval = null;
+            }
         }
 
-        // Memory Game
+        // Memory Game - from menu
+        function startMemoryGameFromMenu() {
+            closeGameMenu();
+            startMemoryGame();
+        }
+
         function startMemoryGame() {
             const memoryGame = document.getElementById('memoryGame');
             const memoryGrid = document.getElementById('memoryGrid');
@@ -1458,8 +1458,9 @@
                             updateGameHud();
                             
                             if (matchedPairs === 3) {
+                                gameScore.level++;
+                                updateGameHud();
                                 showAchievement('Memory Master! 🧠', 'Perfect memory!');
-                                setTimeout(() => closeMemoryGame(), 2000);
                             }
                         } else {
                             flippedCards[0].classList.remove('flipped');
@@ -1475,9 +1476,11 @@
 
         function closeMemoryGame() {
             document.getElementById('memoryGame').style.display = 'none';
-            gameScore.level++;
-            updateGameHud();
-            showAchievement('Level Up! 🎉', `You reached Level ${gameScore.level}!`);
+        }
+
+        function startAnimations() {
+            setInterval(createHeart, 500);
+            setInterval(createBubble, 1200);
             spawnClickableHearts();
         }
 
@@ -1505,15 +1508,6 @@
                     }, 5000);
                 }
             }, 3000);
-        }
-
-        function startAnimations() {
-            if (animationsStarted) return;
-            animationsStarted = true;
-            setInterval(createHeart, 500);
-            setInterval(createBubble, 1200);
-            // Setup the evasive No button behavior
-            setupNoBtnBehavior();
         }
 
         function openGallery() {
@@ -1554,21 +1548,6 @@
                 }
             }
         }
-
-        // Close games menu when clicking outside or pressing Escape
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('gamesMenu');
-            const icon = document.getElementById('gameIcon');
-            if (!menu) return;
-            if (menu.style.display !== 'flex') return;
-            if (!menu.contains(e.target) && !icon.contains(e.target)) {
-                closeGamesMenu();
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeGamesMenu();
-        });
 
         if (window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
@@ -1641,9 +1620,7 @@
                 }, 10);
             }, 500);
 
-            // Show a random cute message each time
-            const randomMessage = cuteMessages[Math.floor(Math.random() * cuteMessages.length)];
-            showCuteMessage(randomMessage);
+            showCuteMessage(cuteMessages[Math.min(noClickCount - 1, cuteMessages.length - 1)]);
             
             if (noClickCount === 1) {
                 noBtn.querySelector('span').textContent = "Are you sure? 🥺";
@@ -1664,27 +1641,6 @@
             }, 10);
         }
 
-        // Make the No button move away when you hover over it
-        function setupNoBtnBehavior() {
-            const noBtn = document.getElementById('noBtn');
-            noBtn.addEventListener('mouseenter', () => {
-                moveNoBtnAway();
-            });
-        }
-
-        function moveNoBtnAway() {
-            const noBtn = document.getElementById('noBtn');
-            const randomX = (Math.random() - 0.5) * 300;
-            const randomY = (Math.random() - 0.5) * 150;
-            noBtn.style.transition = 'all 0.3s ease';
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            
-            // Reset position after a short delay
-            setTimeout(() => {
-                noBtn.style.transform = 'translate(0, 0)';
-            }, 500);
-        }
-
         function showCuteMessage(message) {
             const messageDiv = document.getElementById('cuteMessage');
             messageDiv.textContent = message;
@@ -1701,108 +1657,77 @@
             const loveLetter = document.getElementById('loveLetter');
             const countdown = document.getElementById('countdown');
             
-            // Smooth fade out question content
-            questionContent.classList.add('hiding');
+            questionContent.style.display = 'none';
+            successMessage.style.display = 'block';
             
-            setTimeout(() => {
-                questionContent.style.display = 'none';
-                successMessage.style.display = 'block';
-                
-                // Trigger reflow for smooth animation
-                successMessage.offsetHeight;
-                
-                // Add show class for smooth fade in
-                requestAnimationFrame(() => {
-                    successMessage.classList.add('show');
-                });
-                
-                gameScore.points += 100;
-                gameScore.hearts += 50;
-                updateGameHud();
-                
-                // Show achievement after success message appears
-                setTimeout(() => {
-                    showAchievement('True Love! 💕', 'She said YES!!!');
-                }, 500);
-            }, 500);
+            gameScore.points += 100;
+            gameScore.hearts += 50;
+            updateGameHud();
+            showAchievement('True Love! 💕', 'She said YES!!!');
             
-            // Show love letter after success message
             setTimeout(() => {
                 loveLetter.style.display = 'block';
-            }, 1800);
+            }, 1000);
 
-            // Show countdown after love letter
             setTimeout(() => {
                 countdown.style.display = 'block';
                 startCountdown();
-            }, 2800);
+            }, 2000);
             
-            // Start celebration effects with slight delay
-            setTimeout(() => createConfetti(), 300);
-            setTimeout(() => createFireworks(), 800);
-            setTimeout(() => celebrate(), 500);
+            createConfetti();
+            createFireworks();
+            celebrate();
         }
 
         function createConfetti() {
             const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#ff8ecf'];
-            const confettiCount = 80;
             
-            for (let i = 0; i < confettiCount; i++) {
+            for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
-                    requestAnimationFrame(() => {
-                        const confetti = document.createElement('div');
-                        confetti.classList.add('confetti');
-                        confetti.style.left = Math.random() * 100 + '%';
-                        confetti.style.top = '-10px';
-                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                        const size = Math.random() * 8 + 6;
-                        confetti.style.width = size + 'px';
-                        confetti.style.height = size + 'px';
-                        confetti.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
-                        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                        document.body.appendChild(confetti);
-                        
-                        setTimeout(() => confetti.remove(), 4000);
-                    });
-                }, i * 40);
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
             }
         }
 
         function createFireworks() {
-            const burstCount = 6;
-            
-            for (let i = 0; i < burstCount; i++) {
+            for (let i = 0; i < 3; i++) {
                 setTimeout(() => {
-                    requestAnimationFrame(() => {
-                        const x = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
-                        const y = Math.random() * window.innerHeight * 0.4 + 50;
-                        const particleCount = 20;
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.5;
+                    
+                    for (let j = 0; j < 20; j++) {
+                        const firework = document.createElement('div');
+                        firework.className = 'firework';
+                        firework.style.left = x + 'px';
+                        firework.style.top = y + 'px';
+                        firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
                         
-                        for (let j = 0; j < particleCount; j++) {
-                            const firework = document.createElement('div');
-                            firework.className = 'firework';
-                            firework.style.left = x + 'px';
-                            firework.style.top = y + 'px';
-                            firework.style.background = `hsl(${Math.random() * 60 + 340}, 100%, 60%)`;
-                            
-                            const angle = (Math.PI * 2 * j) / particleCount;
-                            const velocity = 100 + Math.random() * 80;
-                            firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
-                            firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
-                            
-                            document.body.appendChild(firework);
-                            setTimeout(() => firework.remove(), 1500);
-                        }
-                    });
-                }, i * 350);
+                        const angle = (Math.PI * 2 * j) / 20;
+                        const velocity = 100 + Math.random() * 100;
+                        firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
+                        firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
+                        
+                        document.body.appendChild(firework);
+                        setTimeout(() => firework.remove(), 1000);
+                    }
+                }, i * 400);
             }
         }
 
         function celebrate() {
             for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    requestAnimationFrame(createHeart);
-                }, i * 120);
+                setTimeout(createHeart, i * 100);
             }
         }
 
