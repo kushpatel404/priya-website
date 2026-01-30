@@ -46,13 +46,18 @@
         }
 
         .loading-screen.hidden {
-            animation: fadeOut 1s ease forwards;
+            animation: fadeOut 2s ease forwards;
             pointer-events: none;
         }
 
         @keyframes fadeOut {
-            to {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
                 opacity: 0;
+                transform: scale(1.1);
             }
         }
 
@@ -227,6 +232,14 @@
             padding: clamp(80px, 15vw, 120px) clamp(15px, 4vw, 20px) clamp(40px, 8vw, 60px);
             padding-bottom: max(60px, env(safe-area-inset-bottom) + 40px);
             padding-top: max(100px, env(safe-area-inset-top) + 80px);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.8s ease-out, transform 1.8s ease-out;
+        }
+
+        .container.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Game Stats HUD */
@@ -242,6 +255,14 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             display: none;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .game-hud.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .score-item {
@@ -287,6 +308,56 @@
         .music-toggle:active {
             transform: scale(0.9);
         }
+
+        /* Game icon and menu */
+        .game-icon {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top) + 10px);
+            /* place to the left of the music button */
+            right: calc(max(20px, env(safe-area-inset-right) + 10px) + 70px);
+            width: clamp(50px, 10vw, 60px);
+            height: clamp(50px, 10vw, 60px);
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 4.5vw, 24px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1100;
+            transition: transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-icon:active { transform: scale(0.95); }
+
+        .games-menu {
+            position: fixed;
+            bottom: calc(max(20px, env(safe-area-inset-bottom) + 100px));
+            left: max(20px, env(safe-area-inset-left) + 20px);
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1250;
+        }
+
+        .games-menu button {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .games-menu .open-game { background: linear-gradient(135deg,#ff6b6b,#ff8e53); color: #fff; }
+        .games-menu .close-menu { background: #eee; color: #333; }
 
         /* Mini Game: Catch the Hearts */
         .mini-game {
@@ -460,19 +531,24 @@
             max-width: 600px;
             width: 100%;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-            animation: cardEntrance 1s ease-out;
+            animation: cardEntrance 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             position: relative;
             border: 3px solid rgba(255, 107, 107, 0.4);
             margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(-60px) scale(0.95);
         }
 
         @keyframes cardEntrance {
-            from {
-                transform: translateY(-50px);
+            0% {
+                transform: translateY(-60px) scale(0.95);
                 opacity: 0;
             }
-            to {
-                transform: translateY(0);
+            60% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
         }
@@ -745,37 +821,46 @@
         .success-message {
             display: none;
             text-align: center;
-            animation: celebration 1s ease-out;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
         }
 
-        @keyframes celebration {
-            0% {
-                transform: scale(0) rotate(-180deg);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
+        .success-message.show {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .success-message h2 {
             font-size: clamp(2rem, 7vw, 3rem);
             color: #ff6b6b;
             margin-bottom: clamp(15px, 4vw, 20px);
-            animation: bounce-success 1s infinite;
+            animation: bounce-success 1.5s ease-in-out infinite;
             text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.8);
+            will-change: transform;
         }
 
         @keyframes bounce-success {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-10px); }
         }
 
         .success-message p {
             font-size: clamp(1.1rem, 4vw, 1.5rem);
             color: #222;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Question content fade out */
+        #questionContent {
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            will-change: opacity, transform;
+        }
+
+        #questionContent.hiding {
+            opacity: 0;
+            transform: scale(0.95);
         }
 
         /* Love letter animation */
@@ -786,16 +871,17 @@
             background: #fff9e6;
             border: 2px dashed #ff6b6b;
             border-radius: 15px;
-            animation: letter-unfold 1s ease-out;
+            animation: letter-unfold 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            will-change: transform, opacity;
         }
 
         @keyframes letter-unfold {
             from {
-                transform: rotateX(90deg);
+                transform: translateY(20px) scale(0.9);
                 opacity: 0;
             }
             to {
-                transform: rotateX(0deg);
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
         }
@@ -813,12 +899,19 @@
             width: 10px;
             height: 10px;
             background: #ff6b6b;
-            animation: confetti-fall 3s linear infinite;
+            animation: confetti-fall 3s linear forwards;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            pointer-events: none;
         }
 
         @keyframes confetti-fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
         }
@@ -831,6 +924,19 @@
             background: linear-gradient(135deg, #fff0f0, #ffe5e5);
             border-radius: 15px;
             display: none;
+            animation: fade-slide-up 0.7s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes fade-slide-up {
+            from {
+                transform: translateY(15px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .countdown-title {
@@ -897,19 +1003,25 @@
         /* Fireworks */
         .firework {
             position: fixed;
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            animation: firework-burst 1s ease-out forwards;
+            animation: firework-burst 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            pointer-events: none;
         }
 
         @keyframes firework-burst {
             0% {
-                transform: translate(0, 0);
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            50% {
                 opacity: 1;
             }
             100% {
-                transform: translate(var(--x), var(--y));
+                transform: translate(var(--x), var(--y)) scale(0.3);
                 opacity: 0;
             }
         }
@@ -939,6 +1051,16 @@
 
     <!-- Music toggle -->
     <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🔊</button>
+
+    <!-- Game icon (left of music icon). Click starts Catch game -->
+    <div class="game-icon" id="gameIcon" title="Play Games" onclick="openCatchGameFromMenu()">🎮</div>
+
+    <!-- Games menu -->
+    <div class="games-menu" id="gamesMenu" aria-hidden="true">
+        <button class="open-game" onclick="openCatchGameFromMenu()">Catch the Hearts 💖</button>
+        <button class="open-game" onclick="openMemoryGameFromMenu()">Memory Game 🧠</button>
+        <button class="close-menu" onclick="closeGamesMenu()">Close ✕</button>
+    </div>
 
     <!-- Background audio -->
     <audio id="bgMusic" loop preload="auto">
@@ -1075,12 +1197,14 @@
 
         let currentPhotoIndex = 0;
         let musicPlaying = false;
+        let animationsStarted = false;
 
-        // Start experience function - NO QUIZ GAME
+        // Start experience function - NO GAMES AUTO-START
         function startExperience() {
             const music = document.getElementById('bgMusic');
             const loadingScreen = document.getElementById('loadingScreen');
             const musicBtn = document.getElementById('musicBtn');
+            const container = document.querySelector('.container');
             
             const playPromise = music.play();
             
@@ -1089,28 +1213,70 @@
                     musicPlaying = true;
                     musicBtn.textContent = '🔊';
                     loadingScreen.classList.add('hidden');
+                    
+                    // Show container with slower elegant transition
+                    setTimeout(() => {
+                        container.style.display = 'flex';
+                        // Trigger reflow
+                        container.offsetHeight;
+                        // Add visible class for smooth fade in
+                        requestAnimationFrame(() => {
+                            container.classList.add('visible');
+                        });
+                    }, 800);
+                    
                     setTimeout(() => {
                         loadingScreen.style.display = 'none';
-                    }, 1000);
-                    startAnimations();
-                    showGameHud();
-                    // Start directly with catch game instead of quiz
-                    setTimeout(() => startCatchGame(), 2000);
+                    }, 2000);
+                    
+                    // Start animations after a delay for smoother experience
+                    setTimeout(() => {
+                        startAnimations();
+                    }, 1200);
+                    
+                    // Show HUD with delay
+                    setTimeout(() => {
+                        showGameHud();
+                    }, 2500);
+                    
+                    // NO AUTO GAME START - user clicks game icon instead
                 }).catch(error => {
                     console.log('Autoplay prevented:', error);
                     loadingScreen.classList.add('hidden');
+                    
+                    // Show container with slower elegant transition
+                    setTimeout(() => {
+                        container.style.display = 'flex';
+                        container.offsetHeight;
+                        requestAnimationFrame(() => {
+                            container.classList.add('visible');
+                        });
+                    }, 800);
+                    
                     setTimeout(() => {
                         loadingScreen.style.display = 'none';
-                    }, 1000);
-                    startAnimations();
-                    showGameHud();
-                    setTimeout(() => startCatchGame(), 2000);
+                    }, 2000);
+                    
+                    setTimeout(() => {
+                        startAnimations();
+                    }, 1200);
+                    
+                    setTimeout(() => {
+                        showGameHud();
+                    }, 2500);
+                    // NO AUTO GAME START
                 });
             }
         }
 
         function showGameHud() {
-            document.getElementById('gameHud').style.display = 'block';
+            const hud = document.getElementById('gameHud');
+            hud.style.display = 'block';
+            // Trigger reflow
+            hud.offsetHeight;
+            requestAnimationFrame(() => {
+                hud.classList.add('visible');
+            });
             updateGameHud();
         }
 
@@ -1129,6 +1295,55 @@
             setTimeout(() => {
                 achievement.classList.remove('show');
             }, 3000);
+        }
+
+        // Games menu handlers - GLOBAL SCOPE
+        function toggleGamesMenu() {
+            const menu = document.getElementById('gamesMenu');
+            if (menu.style.display === 'flex') {
+                closeGamesMenu();
+            } else {
+                menu.style.display = 'flex';
+                menu.setAttribute('aria-hidden', 'false');
+            }
+        }
+
+        function closeGamesMenu() {
+            const menu = document.getElementById('gamesMenu');
+            menu.style.display = 'none';
+            menu.setAttribute('aria-hidden', 'true');
+        }
+
+        function openCatchGameFromMenu() {
+            closeGamesMenu();
+            // Ensure UI and animations are running
+            if (!animationsStarted) {
+                startAnimations();
+            }
+            showGameHud();
+            // Hide loading screen if still visible
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen && loadingScreen.style.display !== 'none') {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
+            }
+            startCatchGame();
+        }
+
+        function openMemoryGameFromMenu() {
+            closeGamesMenu();
+            // Ensure UI and animations are running
+            if (!animationsStarted) {
+                startAnimations();
+            }
+            showGameHud();
+            // Hide loading screen if still visible
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen && loadingScreen.style.display !== 'none') {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
+            }
+            startMemoryGame();
         }
 
         // Catch the Hearts Game
@@ -1273,6 +1488,8 @@
         }
 
         function startAnimations() {
+            if (animationsStarted) return;
+            animationsStarted = true;
             setInterval(createHeart, 500);
             setInterval(createBubble, 1200);
         }
@@ -1315,6 +1532,21 @@
                 }
             }
         }
+
+        // Close games menu when clicking outside or pressing Escape
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('gamesMenu');
+            const icon = document.getElementById('gameIcon');
+            if (!menu) return;
+            if (menu.style.display !== 'flex') return;
+            if (!menu.contains(e.target) && !icon.contains(e.target)) {
+                closeGamesMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeGamesMenu();
+        });
 
         if (window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
@@ -1424,77 +1656,108 @@
             const loveLetter = document.getElementById('loveLetter');
             const countdown = document.getElementById('countdown');
             
-            questionContent.style.display = 'none';
-            successMessage.style.display = 'block';
-            
-            gameScore.points += 100;
-            gameScore.hearts += 50;
-            updateGameHud();
-            showAchievement('True Love! 💕', 'She said YES!!!');
+            // Smooth fade out question content
+            questionContent.classList.add('hiding');
             
             setTimeout(() => {
+                questionContent.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Trigger reflow for smooth animation
+                successMessage.offsetHeight;
+                
+                // Add show class for smooth fade in
+                requestAnimationFrame(() => {
+                    successMessage.classList.add('show');
+                });
+                
+                gameScore.points += 100;
+                gameScore.hearts += 50;
+                updateGameHud();
+                
+                // Show achievement after success message appears
+                setTimeout(() => {
+                    showAchievement('True Love! 💕', 'She said YES!!!');
+                }, 500);
+            }, 500);
+            
+            // Show love letter after success message
+            setTimeout(() => {
                 loveLetter.style.display = 'block';
-            }, 1000);
+            }, 1800);
 
+            // Show countdown after love letter
             setTimeout(() => {
                 countdown.style.display = 'block';
                 startCountdown();
-            }, 2000);
+            }, 2800);
             
-            createConfetti();
-            createFireworks();
-            celebrate();
+            // Start celebration effects with slight delay
+            setTimeout(() => createConfetti(), 300);
+            setTimeout(() => createFireworks(), 800);
+            setTimeout(() => celebrate(), 500);
         }
 
         function createConfetti() {
             const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#ff8ecf'];
+            const confettiCount = 80;
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < confettiCount; i++) {
                 setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.classList.add('confetti');
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.top = '-10px';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.width = Math.random() * 10 + 5 + 'px';
-                    confetti.style.height = confetti.style.width;
-                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                    document.body.appendChild(confetti);
-                    
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 30);
+                    requestAnimationFrame(() => {
+                        const confetti = document.createElement('div');
+                        confetti.classList.add('confetti');
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.top = '-10px';
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        const size = Math.random() * 8 + 6;
+                        confetti.style.width = size + 'px';
+                        confetti.style.height = size + 'px';
+                        confetti.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+                        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                        document.body.appendChild(confetti);
+                        
+                        setTimeout(() => confetti.remove(), 4000);
+                    });
+                }, i * 40);
             }
         }
 
         function createFireworks() {
-            for (let i = 0; i < 3; i++) {
+            const burstCount = 6;
+            
+            for (let i = 0; i < burstCount; i++) {
                 setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight * 0.5;
-                    
-                    for (let j = 0; j < 20; j++) {
-                        const firework = document.createElement('div');
-                        firework.className = 'firework';
-                        firework.style.left = x + 'px';
-                        firework.style.top = y + 'px';
-                        firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    requestAnimationFrame(() => {
+                        const x = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
+                        const y = Math.random() * window.innerHeight * 0.4 + 50;
+                        const particleCount = 20;
                         
-                        const angle = (Math.PI * 2 * j) / 20;
-                        const velocity = 100 + Math.random() * 100;
-                        firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
-                        firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
-                        
-                        document.body.appendChild(firework);
-                        setTimeout(() => firework.remove(), 1000);
-                    }
-                }, i * 400);
+                        for (let j = 0; j < particleCount; j++) {
+                            const firework = document.createElement('div');
+                            firework.className = 'firework';
+                            firework.style.left = x + 'px';
+                            firework.style.top = y + 'px';
+                            firework.style.background = `hsl(${Math.random() * 60 + 340}, 100%, 60%)`;
+                            
+                            const angle = (Math.PI * 2 * j) / particleCount;
+                            const velocity = 100 + Math.random() * 80;
+                            firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
+                            firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
+                            
+                            document.body.appendChild(firework);
+                            setTimeout(() => firework.remove(), 1500);
+                        }
+                    });
+                }, i * 350);
             }
         }
 
         function celebrate() {
             for (let i = 0; i < 20; i++) {
-                setTimeout(createHeart, i * 100);
+                setTimeout(() => {
+                    requestAnimationFrame(createHeart);
+                }, i * 120);
             }
         }
 
