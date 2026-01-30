@@ -36,7 +36,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -62,41 +62,50 @@
         }
 
         .loading-screen h2 {
-            color: white;
+            color: #fff;
             font-size: clamp(1.5rem, 5vw, 2.5rem);
             margin-bottom: 30px;
             animation: pulse 1.5s infinite;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 107, 107, 0.7);
+            letter-spacing: 1px;
         }
 
         .play-button {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            background: linear-gradient(135deg, #ff3366, #ff8e53);
             color: white;
-            border: none;
+            border: 3px solid rgba(255, 255, 255, 0.6);
             padding: clamp(15px, 4vw, 25px) clamp(40px, 10vw, 60px);
             font-size: clamp(1.2rem, 4vw, 1.8rem);
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8), 0 15px 50px rgba(255, 107, 107, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
             font-weight: bold;
-            animation: bounce 2s infinite;
+            animation: popBounce 1.5s ease-in-out infinite;
             -webkit-tap-highlight-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .play-button:hover {
+            box-shadow: 0 0 50px rgba(255, 51, 102, 1), 0 20px 60px rgba(255, 107, 107, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        @keyframes popBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-15px) scale(1.05);
+            }
         }
 
         .play-button:active {
             transform: scale(0.95);
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.7);
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.9), 0 5px 20px rgba(255, 107, 107, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
         /* Animated background with photos */
@@ -388,7 +397,7 @@
 
         .game-heart {
             position: absolute;
-            font-size: 30px;
+            font-size: 55px;
             cursor: pointer;
             animation: fall-heart 3s linear;
             pointer-events: auto;
@@ -718,6 +727,17 @@
             75% { transform: translateX(10px); }
         }
 
+        @keyframes cardFadeOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+        }
+
         .counter-text {
             font-size: clamp(0.95rem, 3vw, 1.1rem);
             color: #ff6b6b;
@@ -1036,7 +1056,7 @@
 
     <!-- Animated background with your photos -->
     <div class="background-slideshow">
-        <img src="images/priya1.JPG" alt="" class="bg-image">
+        <img src="images/priya1.jpg" alt="" class="bg-image">
         <img src="images/priya2.jpg" alt="" class="bg-image">
         <img src="images/priya3.jpg" alt="" class="bg-image">
         <img src="images/priya4.jpg" alt="" class="bg-image">
@@ -1116,7 +1136,7 @@
             <span class="rose-decoration rose-right">🌹</span>
             
             <div class="image-container" onclick="openGallery()">
-                <img src="images/priya1.JPG" alt="Priya" id="profileImage">
+                <img src="images/priya1.jpg" alt="Priya" id="profileImage">
             </div>
 
             <div id="questionContent">
@@ -1189,7 +1209,7 @@
 
         // Your photos for gallery and background
         const photos = [
-            'images/priya1.JPG',
+            'images/priya1.jpg',
             'images/priya2.jpg',
             'images/priya3.jpg',
             'images/priya4.jpg'
@@ -1492,6 +1512,8 @@
             animationsStarted = true;
             setInterval(createHeart, 500);
             setInterval(createBubble, 1200);
+            // Setup the evasive No button behavior
+            setupNoBtnBehavior();
         }
 
         function openGallery() {
@@ -1619,7 +1641,9 @@
                 }, 10);
             }, 500);
 
-            showCuteMessage(cuteMessages[Math.min(noClickCount - 1, cuteMessages.length - 1)]);
+            // Show a random cute message each time
+            const randomMessage = cuteMessages[Math.floor(Math.random() * cuteMessages.length)];
+            showCuteMessage(randomMessage);
             
             if (noClickCount === 1) {
                 noBtn.querySelector('span').textContent = "Are you sure? 🥺";
@@ -1638,6 +1662,27 @@
             setTimeout(() => {
                 card.style.animation = 'shake 0.5s';
             }, 10);
+        }
+
+        // Make the No button move away when you hover over it
+        function setupNoBtnBehavior() {
+            const noBtn = document.getElementById('noBtn');
+            noBtn.addEventListener('mouseenter', () => {
+                moveNoBtnAway();
+            });
+        }
+
+        function moveNoBtnAway() {
+            const noBtn = document.getElementById('noBtn');
+            const randomX = (Math.random() - 0.5) * 300;
+            const randomY = (Math.random() - 0.5) * 150;
+            noBtn.style.transition = 'all 0.3s ease';
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            // Reset position after a short delay
+            setTimeout(() => {
+                noBtn.style.transform = 'translate(0, 0)';
+            }, 500);
         }
 
         function showCuteMessage(message) {
