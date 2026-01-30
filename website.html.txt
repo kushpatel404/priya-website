@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><text y="16" font-size="16">💕</text></svg>'), auto;
+        }
+
+        /* Sparkles cursor trail */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            animation: sparkle-float 1s ease-out forwards;
+            z-index: 9999;
+        }
+
+        @keyframes sparkle-float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Floating hearts background */
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float 6s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Floating bubbles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 182, 193, 0.4));
+            animation: bubble-float 8s infinite ease-in-out;
+            opacity: 0.5;
+        }
+
+        @keyframes bubble-float {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0);
+            }
+            50% {
+                transform: translateY(-100px) translateX(50px);
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Music toggle button */
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse-music 2s infinite;
+        }
+
+        @keyframes pulse-music {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.2) rotate(15deg);
+        }
+
+        /* 3D Card */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            animation: cardEntrance 1s ease-out;
+            position: relative;
+            border: 3px solid rgba(255, 107, 107, 0.3);
+        }
+
+        @keyframes cardEntrance {
+            from {
+                transform: rotateX(-90deg) translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0deg) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        /* Image container with 3D effect and photo gallery */
+        .image-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #ff6b6b;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5);
+            animation: image-glow 2s infinite alternate;
+        }
+
+        @keyframes image-glow {
+            from {
+                box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5);
+            }
+            to {
+                box-shadow: 0 10px 50px rgba(255, 107, 107, 0.9);
+            }
+        }
+
+        /* Photo gallery overlay */
+        .photo-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .gallery-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .gallery-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 107, 0.5);
+        }
+
+        .close-gallery {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 107, 107, 0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .prev { left: -70px; }
+        .next { right: -70px; }
+
+        /* Text styling */
+        h1 {
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.2em;
+            animation: color-change 3s infinite;
+        }
+
+        @keyframes color-change {
+            0%, 100% { color: #ff6b6b; }
+            33% { color: #ff8787; }
+            66% { color: #ffa5a5; }
+        }
+
+        /* Counter */
+        .counter {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffe5e5, #fff0f0);
+            border-radius: 15px;
+            animation: shake 0.5s;
+            animation-iteration-count: 0;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .counter-text {
+            font-size: 1.1em;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        /* Button container */
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        /* Yes button */
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-yes::before {
+            content: "✨";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 2em;
+            animation: sparkle-btn 1s infinite;
+        }
+
+        @keyframes sparkle-btn {
+            0%, 100% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+            animation: wiggle 0.5s infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: translateY(-5px) rotate(0deg) scale(1.1); }
+            25% { transform: translateY(-5px) rotate(-5deg) scale(1.1); }
+            75% { transform: translateY(-5px) rotate(5deg) scale(1.1); }
+        }
+
+        /* No button with running away effect */
+        .btn-no {
+            background: linear-gradient(135deg, #95a5a6, #b2bec3);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(149, 165, 166, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .btn-no:hover {
+            transform: scale(0.8);
+            padding: 15px 40px;
+            font-size: 1.2em;
+        }
+
+        /* Cute messages popup */
+        .cute-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 1500;
+            text-align: center;
+            font-size: 1.5em;
+            color: #ff6b6b;
+            animation: popup 0.5s ease-out forwards;
+            display: none;
+        }
+
+        @keyframes popup {
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            text-align: center;
+            animation: celebration 1s ease-out;
+        }
+
+        @keyframes celebration {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .success-message h2 {
+            font-size: 3em;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .success-message p {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        /* Love letter animation */
+        .love-letter {
+            display: none;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fff9e6;
+            border: 2px dashed #ff6b6b;
+            border-radius: 15px;
+            animation: letter-unfold 1s ease-out;
+        }
+
+        @keyframes letter-unfold {
+            from {
+                transform: rotateX(90deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0deg);
+                opacity: 1;
+            }
+        }
+
+        .love-letter p {
+            font-style: italic;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Countdown timer */
+        .countdown {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff0f0, #ffe5e5);
+            border-radius: 15px;
+            display: none;
+        }
+
+        .countdown-title {
+            font-size: 1.2em;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .countdown-timer {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff6b6b;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .message {
+                font-size: 1.1em;
+            }
+            
+            .btn-yes, .btn-no {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
+            
+            .card {
+                padding: 40px 20px;
+            }
+
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .prev { left: -50px; }
+            .next { right: -50px; }
+        }
+
+        /* 3D Rose decoration */
+        .rose-decoration {
+            position: absolute;
+            font-size: 4em;
+            animation: float-rose 3s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(255, 107, 107, 0.5));
+        }
+
+        .rose-left {
+            top: -20px;
+            left: -20px;
+            animation-delay: 0s;
+        }
+
+        .rose-right {
+            bottom: -20px;
+            right: -20px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float-rose {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        /* Cute stickers floating around */
+        .sticker {
+            position: fixed;
+            font-size: 3em;
+            animation: float-sticker 5s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float-sticker {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(15deg);
+            }
+        }
+
+        /* Fireworks */
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: firework-burst 1s ease-out forwards;
+        }
+
+        @keyframes firework-burst {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Music toggle -->
+    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎵</button>
+
+    <!-- Background audio - CHANGE THIS TO YOUR MUSIC FILE -->
+    <audio id="bgMusic" loop>
+        <!-- Option 1: Use your own file - put your music.mp3 in a 'music' folder -->
+        <source src="music/romantic-song.mp3" type="audio/mpeg">
+        
+        <!-- Option 2: Or use this free romantic music -->
+        <!-- <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg"> -->
+    </audio>
+
+    <!-- Floating hearts background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Cute stickers -->
+    <div class="sticker" style="top: 10%; left: 10%; animation-delay: 0s;">💝</div>
+    <div class="sticker" style="top: 20%; right: 15%; animation-delay: 1s;">💖</div>
+    <div class="sticker" style="bottom: 15%; left: 20%; animation-delay: 2s;">💗</div>
+    <div class="sticker" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">💕</div>
+    <div class="sticker" style="top: 50%; left: 5%; animation-delay: 0.5s;">🦋</div>
+    <div class="sticker" style="top: 60%; right: 8%; animation-delay: 2.5s;">🌸</div>
+
+    <!-- Cute message popup -->
+    <div class="cute-message" id="cuteMessage"></div>
+
+    <!-- Photo gallery -->
+    <div class="photo-gallery" id="photoGallery">
+        <div class="gallery-content">
+            <button class="close-gallery" onclick="closeGallery()">✕</button>
+            <button class="gallery-nav prev" onclick="changePhoto(-1)">❮</button>
+            <img src="" alt="Gallery" class="gallery-image" id="galleryImage">
+            <button class="gallery-nav next" onclick="changePhoto(1)">❯</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <span class="rose-decoration rose-left">🌹</span>
+            <span class="rose-decoration rose-right">🌹</span>
+            
+            <!-- CHANGE THIS IMAGE - Put your main photo here -->
+            <div class="image-container" onclick="openGallery()">
+                <img src="images/priya1.jpg" alt="Priya" id="profileImage">
+                <!-- If you don't have images yet, use this placeholder: -->
+                <!-- <img src="https://via.placeholder.com/200/ff6b6b/ffffff?text=Priya+💕" alt="Priya" id="profileImage"> -->
+            </div>
+
+            <div id="questionContent">
+                <h1>Dear Priya 💕</h1>
+                <p class="message">
+                    Every moment with you feels like a beautiful dream.<br>
+                    Your smile lights up my world,<br>
+                    and your love makes every day special.<br><br>
+                    So, my dearest <span class="highlight">Priya</span>,<br>
+                    I have one question...
+                </p>
+
+                <!-- Counter for No clicks -->
+                <div class="counter" id="noCounter" style="display: none;">
+                    <p class="counter-text">Times you tried to say no: <span id="noCount">0</span> 🥺</p>
+                </div>
+
+                <h1 style="font-size: 2.5em; margin: 30px 0;">
+                    Will You Be My Valentine? 💖
+                </h1>
+                
+                <div class="button-container">
+                    <button class="btn-yes" onclick="sayYes()">Yes! 💕</button>
+                    <button class="btn-no" id="noBtn" onmouseover="runAwayButton(event)" onclick="sayNo()">No</button>
+                </div>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <h2>🎉 Yay! 🎉</h2>
+                <p>You've made me the happiest person alive!</p>
+                <p style="font-size: 2em; margin-top: 20px;">💑 💕 💖 💗 💝</p>
+                
+                <!-- CUSTOMIZE THIS LOVE LETTER -->
+                <div class="love-letter" id="loveLetter">
+                    <h3 style="color: #ff6b6b; margin-bottom: 15px;">A Special Message Just For You 💌</h3>
+                    <p>
+                        My dearest Priya,<br><br>
+                        From the moment you came into my life, everything changed for the better.
+                        Your laughter is my favorite song, your smile is my favorite view,
+                        and your love is my favorite feeling.<br><br>
+                        I promise to cherish every moment we share, to make you smile every day,
+                        and to love you more with each passing heartbeat.<br><br>
+                        Happy Valentine's Day, my love! 💕<br>
+                        Forever yours ❤️<br>
+                        [Your Name Here]
+                    </p>
+                </div>
+
+                <!-- Countdown to Valentine's Day -->
+                <div class="countdown" id="countdown">
+                    <div class="countdown-title">Time until Valentine's Day 2025:</div>
+                    <div class="countdown-timer" id="countdownTimer"></div>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.2em;">I love you, Priya! ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CHANGE THESE PHOTOS - Replace with your actual image paths
+        const photos = [
+            'images/priya1.jpg',
+            'images/priya2.jpg',
+            'images/priya3.jpg',
+            'images/priya4.jpg'
+            // You can add more photos here!
+            // 'images/priya5.jpg',
+            // 'images/priya6.jpg',
+        ];
+
+        // If you don't have images yet, use these placeholders:
+        /*
+        const photos = [
+            'https://via.placeholder.com/600/ff6b6b/ffffff?text=Our+Beautiful+Memories+1',
+            'https://via.placeholder.com/600/ff8787/ffffff?text=Our+Beautiful+Memories+2',
+            'https://via.placeholder.com/600/ffa5a5/ffffff?text=Our+Beautiful+Memories+3',
+            'https://via.placeholder.com/600/ffb6b6/ffffff?text=Our+Beautiful+Memories+4'
+        ];
+        */
+
+        let currentPhotoIndex = 0;
+
+        function openGallery() {
+            document.getElementById('photoGallery').style.display = 'flex';
+            document.getElementById('galleryImage').src = photos[currentPhotoIndex];
+        }
+
+        function closeGallery() {
+            document.getElementById('photoGallery').style.display = 'none';
+        }
+
+        function changePhoto(direction) {
+            currentPhotoIndex += direction;
+            if (currentPhotoIndex < 0) currentPhotoIndex = photos.length - 1;
+            if (currentPhotoIndex >= photos.length) currentPhotoIndex = 0;
+            document.getElementById('galleryImage').src = photos[currentPhotoIndex];
+        }
+
+        // Music functionality
+        let musicPlaying = false;
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            
+            if (musicPlaying) {
+                music.pause();
+                btn.textContent = '🎵';
+                musicPlaying = false;
+            } else {
+                music.play();
+                btn.textContent = '🔊';
+                musicPlaying = true;
+            }
+        }
+
+        // Sparkle cursor trail
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.8) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.textContent = ['✨', '💫', '⭐', '🌟'][Math.floor(Math.random() * 4)];
+                sparkle.style.left = e.pageX + 'px';
+                sparkle.style.top = e.pageY + 'px';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        });
+
+        // Create floating hearts
+        function createHeart() {
+            const heartsContainer = document.getElementById('heartsContainer');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '💘'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Create bubbles
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 60 + 20;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.getElementById('heartsContainer').appendChild(bubble);
+
+            setTimeout(() => bubble.remove(), 10000);
+        }
+
+        // Create hearts and bubbles continuously
+        setInterval(createHeart, 300);
+        setInterval(createBubble, 800);
+
+        // CUSTOMIZE THESE CUTE MESSAGES
+        const cuteMessages = [
+            "Please Priya? 🥺 I promise to make you smile every day!",
+            "But... but... I bought chocolates! 🍫",
+            "My heart is breaking 💔 Are you sure?",
+            "I'll even let you pick the movie! 🎬",
+            "Pretty please with a cherry on top? 🍒",
+            "I'll cook your favorite meal! 🍝",
+            "Come on... you know you want to say yes! 😊",
+            "I'll give you unlimited hugs! 🤗",
+            "Think of all the cute dates we could have! 🎡"
+            // Add your own messages here!
+            // "Remember when we [special memory]? 💕",
+            // "I love you more than [something cute]! ❤️",
+        ];
+
+        // No button functionality with running away
+        let noClickCount = 0;
+        function runAwayButton(event) {
+            const button = event.target;
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            button.style.position = 'fixed';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+            button.style.transition = 'all 0.3s ease';
+        }
+
+        function sayNo() {
+            noClickCount++;
+            const noBtn = document.getElementById('noBtn');
+            const counter = document.getElementById('noCounter');
+            const noCount = document.getElementById('noCount');
+            
+            counter.style.display = 'block';
+            noCount.textContent = noClickCount;
+            counter.style.animationIterationCount = 1;
+            setTimeout(() => {
+                counter.style.animation = 'none';
+                setTimeout(() => {
+                    counter.style.animation = 'shake 0.5s';
+                }, 10);
+            }, 500);
+
+            // Show cute message
+            showCuteMessage(cuteMessages[Math.min(noClickCount - 1, cuteMessages.length - 1)]);
+            
+            if (noClickCount === 1) {
+                noBtn.textContent = "Are you sure? 🥺";
+            } else if (noClickCount === 2) {
+                noBtn.textContent = "Please? 🥹";
+            } else if (noClickCount === 3) {
+                noBtn.textContent = "Pretty please? 💕";
+            } else if (noClickCount >= 4) {
+                noBtn.textContent = "Fine, I'll keep asking! 😤";
+                // Make Yes button bigger
+                const yesBtn = document.querySelector('.btn-yes');
+                yesBtn.style.transform = 'scale(' + (1 + noClickCount * 0.1) + ')';
+            }
+
+            // Shake the card
+            const card = document.querySelector('.card');
+            card.style.animation = 'none';
+            setTimeout(() => {
+                card.style.animation = 'shake 0.5s';
+            }, 10);
+        }
+
+        function showCuteMessage(message) {
+            const messageDiv = document.getElementById('cuteMessage');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 2000);
+        }
+
+        // Yes button - show celebration
+        function sayYes() {
+            const questionContent = document.getElementById('questionContent');
+            const successMessage = document.getElementById('successMessage');
+            const loveLetter = document.getElementById('loveLetter');
+            const countdown = document.getElementById('countdown');
+            
+            questionContent.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Show love letter after 1 second
+            setTimeout(() => {
+                loveLetter.style.display = 'block';
+            }, 1000);
+
+            // Show countdown after 2 seconds
+            setTimeout(() => {
+                countdown.style.display = 'block';
+                startCountdown();
+            }, 2000);
+            
+            // Create confetti
+            createConfetti();
+            
+            // Create fireworks
+            createFireworks();
+            
+            // Play celebration
+            celebrate();
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcf7f', '#4d96ff', '#ff8ecf'];
+            
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        function createFireworks() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.5;
+                    
+                    for (let j = 0; j < 30; j++) {
+                        const firework = document.createElement('div');
+                        firework.className = 'firework';
+                        firework.style.left = x + 'px';
+                        firework.style.top = y + 'px';
+                        firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                        
+                        const angle = (Math.PI * 2 * j) / 30;
+                        const velocity = 100 + Math.random() * 100;
+                        firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
+                        firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
+                        
+                        document.body.appendChild(firework);
+                        setTimeout(() => firework.remove(), 1000);
+                    }
+                }, i * 400);
+            }
+        }
+
+        function celebrate() {
+            // Add extra hearts
+            for (let i = 0; i < 30; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        // Countdown to Valentine's Day
+        function startCountdown() {
+            const countdownTimer = document.getElementById('countdownTimer');
+            const valentinesDay = new Date('February 14, 2025 00:00:00').getTime();
+
+            const updateCountdown = () => {
+                const now = new Date().getTime();
+                const distance = valentinesDay - now;
+
+                if (distance < 0) {
+                    countdownTimer.innerHTML = "It's Valentine's Day! 💕";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownTimer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            };
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Add mouse move 3D effect to card
+        const card = document.querySelector('.card');
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.clientX) / 25;
+            const y = (window.innerHeight / 2 - e.clientY) / 25;
+            card.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === 'y' || e.key === 'Y') {
+                sayYes();
+            }
+        });
+    </script>
+</body>
+</html>
