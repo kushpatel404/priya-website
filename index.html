@@ -94,6 +94,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: -80px;
         }
 
         .loading-screen.hidden {
@@ -120,8 +121,8 @@
         /* 3D Heart Container */
         .heart-3d-container {
             position: relative;
-            width: clamp(180px, 45vw, 280px);
-            height: clamp(180px, 45vw, 280px);
+            width: clamp(140px, 35vw, 220px);
+            height: clamp(140px, 35vw, 220px);
             margin-bottom: 40px;
             perspective: 1000px;
             display: flex;
@@ -308,8 +309,8 @@
             background: linear-gradient(135deg, #ff6b6b, #ff8e53);
             color: white;
             border: none;
-            padding: clamp(15px, 4vw, 25px) clamp(40px, 10vw, 60px);
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            padding: clamp(12px, 3vw, 18px) clamp(30px, 8vw, 45px);
+            font-size: clamp(1rem, 3vw, 1.4rem);
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
@@ -838,6 +839,11 @@
             border: 5px solid #ff6b6b;
             box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
             animation: image-glow 2s infinite alternate;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
         }
 
         @keyframes image-glow {
@@ -847,6 +853,77 @@
             to {
                 box-shadow: 0 20px 60px rgba(255, 107, 107, 0.9);
             }
+        }
+
+        /* Animated Tooltip */
+        .image-tooltip {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            white-space: nowrap;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .image-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 10px 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent #ff6b6b transparent;
+        }
+
+        .image-container:hover .image-tooltip {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+            animation: tooltipBounce 0.6s ease-out forwards, tooltipPulse 1.5s ease-in-out 0.6s infinite;
+        }
+
+        @keyframes tooltipBounce {
+            0% {
+                transform: translateX(-50%) scale(0) translateY(10px);
+                opacity: 0;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.1) translateY(-5px);
+            }
+            100% {
+                transform: translateX(-50%) scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes tooltipPulse {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.08);
+            }
+        }
+
+        /* Sparkle effect on tooltip */
+        .tooltip-sparkle {
+            display: inline-block;
+            animation: sparkleRotate 1s linear infinite;
+        }
+
+        @keyframes sparkleRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Photo gallery overlay */
@@ -1270,8 +1347,6 @@
         </div>
         
         <div class="loading-content">
-            <h2>💕 A Special Message for Priya 💕</h2>
-            
             <!-- 3D Heart -->
             <div class="heart-3d-container">
                 <div class="heart-glow"></div>
@@ -1290,6 +1365,8 @@
                     <span class="heart-particle">💗</span>
                 </div>
             </div>
+            
+            <h2>💕 A Special Message for Priya 💕</h2>
             
             <button class="play-button" onclick="startExperience()">Click to Start 🎵</button>
         </div>
@@ -1385,6 +1462,7 @@
             
             <div class="image-container" onclick="openGallery()">
                 <img src="images/priya1.jpg" alt="Priya" id="profileImage">
+                <div class="image-tooltip"><span class="tooltip-sparkle">✨</span> Click Me! <span class="tooltip-sparkle">✨</span></div>
             </div>
 
             <div id="questionContent">
