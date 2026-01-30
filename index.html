@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#ff6b6b">
     <title>Will You Be My Valentine? 💕</title>
     <style>
         * {
@@ -36,13 +36,64 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10000;
             padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Loading screen background slideshow */
+        .loading-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .loading-bg img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            animation: loadingBgSlide 16s infinite;
+            filter: brightness(0.6) saturate(1.3);
+        }
+
+        .loading-bg img:nth-child(1) { animation-delay: 0s; }
+        .loading-bg img:nth-child(2) { animation-delay: 4s; }
+        .loading-bg img:nth-child(3) { animation-delay: 8s; }
+        .loading-bg img:nth-child(4) { animation-delay: 12s; }
+
+        @keyframes loadingBgSlide {
+            0%, 100% { 
+                opacity: 0; 
+                transform: scale(1.1);
+            }
+            5%, 20% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            25% { 
+                opacity: 0; 
+                transform: scale(1.05);
+            }
+        }
+
+        .loading-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .loading-screen.hidden {
@@ -63,7 +114,7 @@
             animation: pulse 1.5s infinite;
             text-align: center;
             font-weight: 600;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 40px rgba(255, 107, 107, 0.5);
         }
 
         /* Loading screen photo slideshow */
@@ -74,7 +125,7 @@
             margin-bottom: 40px;
             border-radius: 50%;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 8px rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 8px rgba(255,107,107,0.6), 0 0 80px rgba(255,107,107,0.4);
         }
 
         .loading-slideshow img {
@@ -1101,23 +1152,33 @@
 <body>
     <!-- Loading/Music Start Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <h2>💕 A Special Message for Priya 💕</h2>
-        
-        <!-- Photo Slideshow -->
-        <div class="loading-slideshow">
-            <div class="loading-hearts">
-                <span class="loading-heart">💖</span>
-                <span class="loading-heart">💕</span>
-                <span class="loading-heart">💗</span>
-                <span class="loading-heart">💝</span>
-            </div>
-            <img src="images/priya1.JPG" alt="Priya">
-            <img src="images/priya2.jpg" alt="Priya">
-            <img src="images/priya3.jpg" alt="Priya">
-            <img src="images/priya4.jpg" alt="Priya">
+        <!-- Background Photo Slideshow -->
+        <div class="loading-bg">
+            <img src="images/priya1.JPG" alt="">
+            <img src="images/priya2.jpg" alt="">
+            <img src="images/priya3.jpg" alt="">
+            <img src="images/priya4.jpg" alt="">
         </div>
         
-        <button class="play-button" onclick="startExperience()">Click to Start 🎵</button>
+        <div class="loading-content">
+            <h2>💕 A Special Message for Priya 💕</h2>
+            
+            <!-- Circular Photo Slideshow -->
+            <div class="loading-slideshow">
+                <div class="loading-hearts">
+                    <span class="loading-heart">💖</span>
+                    <span class="loading-heart">💕</span>
+                    <span class="loading-heart">💗</span>
+                    <span class="loading-heart">💝</span>
+                </div>
+                <img src="images/priya1.JPG" alt="Priya">
+                <img src="images/priya2.jpg" alt="Priya">
+                <img src="images/priya3.jpg" alt="Priya">
+                <img src="images/priya4.jpg" alt="Priya">
+            </div>
+            
+            <button class="play-button" onclick="startExperience()">Click to Start 🎵</button>
+        </div>
     </div>
 
     <!-- Animated background with your photos -->
